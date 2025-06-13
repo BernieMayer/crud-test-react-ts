@@ -46,7 +46,6 @@ const saveBooks = (newBooks: Book[]) => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(newBooks));
   };
 
-  // Example: Add a new book
   const addBook = (newBook: Book) => {
     const updatedBooks = [...books, newBook];
     saveBooks(updatedBooks);
