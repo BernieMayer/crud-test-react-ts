@@ -8,11 +8,13 @@ import Dashboard from './presentation/pages/Dashboard';
 import Profile from './presentation/pages/Profile.tsx';
 import Books from './presentation/pages/Books.tsx';
 import Login from './presentation/pages/Login.tsx';
+import Register from './presentation/pages/Register.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
        <Routes>
+        <Route path="register" element={<Register />} />
         <Route path="login" element={<Login />} ></Route>
         <Route path="dashboard" element={<Dashboard />}>
           <Route path="profile" element={<Profile />} />
