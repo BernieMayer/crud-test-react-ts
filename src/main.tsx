@@ -1,10 +1,25 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom';
 import './index.css'
 import App from './App.tsx'
+import {  Routes, Route } from "react-router-dom";
+import Dashboard from './presentation/pages/Dashboard';
+import Profile from './presentation/pages/Profile.tsx';
+import Books from './presentation/pages/Books.tsx';
+import Login from './presentation/pages/Login.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <BrowserRouter>
+       <Routes>
+        <Route path="login" element={<Login />} ></Route>
+        <Route path="dashboard" element={<Dashboard />}>
+          <Route path="profile" element={<Profile />} />
+          <Route path="books" element={<Books />} />
+        </Route>
+        <Route path="/" element={  <App /> }  />
+      </Routes>
+    </BrowserRouter>
   </StrictMode>,
 )
