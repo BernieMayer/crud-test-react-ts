@@ -2,6 +2,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { useEffect, useState } from "react";
 import { Book } from '../../models/Book';
+import { Container, Box } from "@mui/material";
 
 
 const STORAGE_KEY = 'myBooks';
@@ -59,48 +60,51 @@ const saveBooks = (newBooks: Book[]) => {
   };
 
   return (
-    <>
-      <h1>Books</h1>
-
-
-      <form onSubmit={handleSubmit}>
-        <TextField
-        label="Title"
-        variant="outlined"
-        name="title"
-        value={formData.title}
-        onChange={handleChange}
-        required
-        />
-
-        <TextField
-        label="Author"
-        variant="outlined"
-        name="author"
-        value={formData.author}
-        onChange={handleChange}
-        required
-        />
-
-       <Button type="submit" variant="contained" color="primary">
-        Submit
-      </Button>
-       
-      </form>
-
+ <Container maxWidth="sm">
+  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 4 }}>
     <h1>Books</h1>
+
+    <form onSubmit={handleSubmit}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <TextField
+          label="Title"
+          variant="outlined"
+          name="title"
+          value={formData.title}
+          onChange={handleChange}
+          required
+        />
+
+        <TextField
+          label="Author"
+          variant="outlined"
+          name="author"
+          value={formData.author}
+          onChange={handleChange}
+          required
+        />
+
+        <Button type="submit" variant="contained" color="primary">
+          Submit
+        </Button>
+      </Box>
+    </form>
+
+    <Box sx={{ mt: 4 }}>
       {books.length === 0 ? (
         <p>No books saved yet.</p>
       ) : (
         <ul>
           {books.map((book, idx) => (
             <li key={idx}>
-              <strong>{book.title}</strong> by {book.author} 
+              <strong>{book.title}</strong> by {book.author}
             </li>
           ))}
         </ul>
       )}
-    </>
+    </Box>
+  </Box>
+</Container>
   )
 }
 
