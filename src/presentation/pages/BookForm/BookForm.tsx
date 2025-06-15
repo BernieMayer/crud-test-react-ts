@@ -11,16 +11,17 @@ const STORAGE_KEY = 'myBooks';
 interface BookFormProps { 
   setBooks: (book: Book[]) => void; 
   books: Book[]; 
+  book?: Book;
 }
 
 
 function BookForm(props:BookFormProps) {
     const [formData, setFormData] = useState({
-        title: '',
-        author: '',
-        isbn: '',
-        category: '',
-        publishedDate: ''
+        title: props.book  ? props.book.title : '',
+        author: props.book ? props.book.author: '',
+        isbn: props.book? props.book.isbn: '',
+        category: props.book? props.book.category: '',
+        publishedDate: props.book? props.book.publishedDate: ''
     });
     const [publishedDate, setPublishedDate] = useState<Dayjs | null>(dayjs('2022-04-17'));
     
@@ -70,6 +71,7 @@ const saveBooks = (newBooks: Book[]) => {
       <Grid container spacing={2}>
         <TextField
           label="Title"
+          defaultValue={props.book?.title}
           variant="outlined"
           name="title"
           value={formData.title}
@@ -79,6 +81,7 @@ const saveBooks = (newBooks: Book[]) => {
 
         <TextField
           label="Author"
+          defaultValue={props.book?.author}
           variant="outlined"
           name="author"
           value={formData.author}
@@ -88,6 +91,7 @@ const saveBooks = (newBooks: Book[]) => {
 
         <TextField
           label="ISBN"
+          defaultValue={props.book?.isbn}
           variant="outlined"
           name="isbn"
           value={formData.isbn}
@@ -97,6 +101,7 @@ const saveBooks = (newBooks: Book[]) => {
 
         <TextField
           label="Category"
+          defaultValue={props.book?.category}
           variant="outlined"
           name="category"
           value={formData.category}
@@ -105,6 +110,7 @@ const saveBooks = (newBooks: Book[]) => {
         />
 
         <DatePicker label="Published date" 
+          defaultValue={dayjs(props.book?.publishedDate, "MM-DD-YYYY")}
            value={publishedDate}
           onChange={(newValue) => setPublishedDate(newValue)}
         />
