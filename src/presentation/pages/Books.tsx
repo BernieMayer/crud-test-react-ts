@@ -2,7 +2,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { useEffect, useState } from "react";
 import { Book } from '../../models/Book';
-import { Container, Box } from "@mui/material";
+import { Container, Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import BookForm from "./BookForm/BookForm";
 
 
@@ -34,22 +34,47 @@ function Books() {
 
     
 
-    <Box sx={{ mt: 4 }}>
-      {books.length === 0 ? (
-        <p>No books saved yet.</p>
-      ) : (
-        <ul>
+   <Box sx={{ mt: 4 }}>
+  {books.length === 0 ? (
+    <p>No books saved yet.</p>
+  ) : (
+    <TableContainer component={Paper}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell><strong>Title</strong></TableCell>
+            <TableCell><strong>Author</strong></TableCell>
+            <TableCell><strong>ISBN</strong></TableCell>
+            <TableCell><strong>Category</strong></TableCell>
+            <TableCell><strong>Published Date</strong></TableCell>
+            <TableCell><strong>Actions</strong></TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
           {books.map((book, idx) => (
-            <li key={idx}>
-              <strong>{book.title}</strong> by {book.author} 
-            <Button type="button" onClick={() => {editBookProc(book)}} variant="contained" color="primary">
-            Edit
-            </Button>
-            </li>
+            <TableRow key={idx}>
+              <TableCell>{book.title}</TableCell>
+              <TableCell>{book.author}</TableCell>
+              <TableCell>{book.isbn}</TableCell>
+              <TableCell>{book.category}</TableCell>
+              <TableCell>{book.publishedDate}</TableCell>
+              <TableCell>
+                <Button 
+                  type="button" 
+                  onClick={() => editBookProc(book)} 
+                  variant="contained" 
+                  color="primary"
+                >
+                  Edit
+                </Button>
+              </TableCell>
+            </TableRow>
           ))}
-        </ul>
-      )}
-    </Box>
+        </TableBody>
+      </Table>
+    </TableContainer>
+  )}
+  </Box>
   </Box>
 </Container>
   )
