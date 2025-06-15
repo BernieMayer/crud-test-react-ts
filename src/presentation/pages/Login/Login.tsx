@@ -1,6 +1,8 @@
 import { Button, Stack, TextField } from "@mui/material"
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
 
 
   return (
@@ -22,7 +24,7 @@ function Login() {
         />
       </Stack>
 
-      <Button variant="outlined">
+      <Button variant="outlined" onClick={() => navigate('/dashboard/books')}>
         Login
       </Button>
     </>
