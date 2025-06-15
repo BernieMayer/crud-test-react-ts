@@ -1,10 +1,11 @@
-import { Grid, Stack, TextField } from "@mui/material";
+import { Box, Button, Grid, Stack, TextField } from "@mui/material";
 import Container from "@mui/material/Container";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { PickerValue } from "@mui/x-date-pickers/internals/models";
 import dayjs, { Dayjs } from "dayjs";
 import { useState } from "react";
+import { User } from "../../../models/User";import UserStorage from "../../../models/UserStorage";
 
 
 export default function UserForm() {
@@ -19,6 +20,20 @@ export default function UserForm() {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
+
+      const newUser: User = {
+          id: crypto.randomUUID(),
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          emailAddress: formData.email,
+          phone: formData.phone,
+          dateOfBirth: formData.dateOfBirth.toString(),
+          role: "user",
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+      }
+
+      UserStorage.storeUser(newUser);
 
     }
 
@@ -44,7 +59,7 @@ export default function UserForm() {
                 <TextField
                 label="First Name"
                 variant="outlined"
-                name="first_name"
+                name="firstName"
                 value={formData.firstName}
                 onChange={handleChange}
                 required
@@ -53,36 +68,46 @@ export default function UserForm() {
                 <TextField
                 label="Last Name"
                 variant="outlined"
-                name="last_name"
+                name="lastName"
                 value={formData.lastName}
                 onChange={handleChange}
                 required
                 />
                 </Stack>
 
-                <TextField
-                label="Email"
-                variant="outlined"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                />
+                <Stack direction="row" spacing={2} padding={2}>
+                    <TextField
+                    label="Email"
+                    variant="outlined"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    />
 
-                <TextField
-                label="Phone"
-                variant="outlined"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                required
-                />
+                    <TextField
+                    label="Phone"
+                    variant="outlined"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    required
+                    />
+                </Stack>
+                <Box padding={2}>
+                      <DatePicker
+                        label="Date of Birth" 
+                        value={formData.dateOfBirth}
+                        onChange={(newValue) => handleDateChange(newValue)}
+                        />
+                </Box>
 
-                <DatePicker
-                label="Date of Birth" 
-                value={formData.dateOfBirth}
-                onChange={(newValue) => handleDateChange(newValue)}
-                />
+                <Box>
+                    <Button type="submit" variant="contained" color="primary">
+                        { "Register"}
+                    </Button>
+                </Box>
+              
 
            
             </form>
