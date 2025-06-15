@@ -19,9 +19,9 @@ function Books() {
     }
   }, []);
 
-  function editBookProc(book:Book) {
-    console.log(book);
-    setEditBook(book);
+  const deleteBook = (book:Book) => {
+    const newBooks = books.filter((b) => (b.id !== book.id));
+    setBooks(newBooks);
   }
 
   return (
@@ -61,11 +61,18 @@ function Books() {
               <TableCell>
                 <Button 
                   type="button" 
-                  onClick={() => editBookProc(book)} 
+                  onClick={() => setEditBook(book)} 
                   variant="contained" 
                   color="primary"
                 >
                   Edit
+                </Button>
+                <Button
+                  type="button"
+                  onClick={() => deleteBook(book) }
+                  variant="contained"
+                  color="error">
+                    Delete
                 </Button>
               </TableCell>
             </TableRow>

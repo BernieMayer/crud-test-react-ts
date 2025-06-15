@@ -56,7 +56,7 @@ function BookForm(props:BookFormProps) {
 
     const updatedBooks = props.book
       ? props.books.map((b) => (b.id === props.book?.id ? newBook : b)) // edit
-      : [...props.books, newBook]; // create
+      : [...props.books, newBook];
 
     saveBooks(updatedBooks);
   };
