@@ -39,22 +39,22 @@ function BookForm(props:BookFormProps) {
 
     
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+      e.preventDefault();
 
-    const newBook: Book = {
-      ...props.book, 
-      id: props.book?.id || crypto.randomUUID(),
-      title: formData.title,
-      author: formData.author,
-      isbn: formData.isbn,
-      category: formData.category,
-      publishedDate: publishedDate ? publishedDate.toString() : "",
-      ownerId: props.book?.ownerId || "",
-      createdAt: props.book?.createdAt || new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
+      const newBook: Book = {
+        ...props.book, 
+        id: props.book?.id || crypto.randomUUID(),
+        title: formData.title,
+        author: formData.author,
+        isbn: formData.isbn,
+        category: formData.category,
+        publishedDate: publishedDate ? publishedDate.toString() : "",
+        ownerId: props.book?.ownerId || "",
+        createdAt: props.book?.createdAt || new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
 
-    const updatedBooks = props.book
+  const updatedBooks = props.book
       ? props.books.map((b) => (b.id === props.book?.id ? newBook : b)) // edit
       : [...props.books, newBook];
 
@@ -68,7 +68,7 @@ function BookForm(props:BookFormProps) {
       }));
   };
 
-const saveBooks = (newBooks: Book[]) => {
+  const saveBooks = (newBooks: Book[]) => {
     props.setBooks(newBooks);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(newBooks));
   };
