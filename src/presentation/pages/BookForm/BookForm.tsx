@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { Book } from "../../../models/Book";
 import { Box, TextField, Button } from "@mui/material";
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs, { Dayjs } from 'dayjs';
 
 const STORAGE_KEY = 'myBooks';
 
@@ -9,23 +13,29 @@ interface BookFormProps {
   books: Book[]; 
 }
 
+
 function BookForm(props:BookFormProps) {
     const [formData, setFormData] = useState({
         title: '',
         author: '',
+        isbn: '',
+        category: '',
+        publishedDate: ''
     });
+    const [publishedDate, setPublishedDate] = useState<Dayjs | null>(dayjs('2022-04-17'));
     
     const handleSubmit = (event:  React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    console.log(formData.publishedDate);
 
     const newBook: Book = {
         title: formData.title,
         author: formData.author,
         // TODO add the other fields later
         id: "",
-        isbn: "",
-        category: "",
-        publishedDate: "",
+        isbn: formData.isbn,
+        category: formData.category,
+        publishedDate: publishedDate? publishedDate.toString(): "",
         ownerId: "",
         createdAt: "",
         updatedAt: ""
@@ -54,7 +64,7 @@ const saveBooks = (newBooks: Book[]) => {
   };
     
     return (
-
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
     <form onSubmit={handleSubmit}>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <TextField
@@ -75,11 +85,36 @@ const saveBooks = (newBooks: Book[]) => {
           required
         />
 
+        <TextField
+          label="ISBN"
+          variant="outlined"
+          name="isbn"
+          value={formData.isbn}
+          onChange={handleChange}
+          required
+        />
+
+        <TextField
+          label="Category"
+          variant="outlined"
+          name="category"
+          value={formData.category}
+          onChange={handleChange}
+          required
+        />
+
+        <DatePicker label="Published date" 
+           value={publishedDate}
+          onChange={(newValue) => setPublishedDate(newValue)}
+        />
+
+
         <Button type="submit" variant="contained" color="primary">
           Submit
         </Button>
       </Box>
     </form>
+    </LocalizationProvider>
     )
     
 }
