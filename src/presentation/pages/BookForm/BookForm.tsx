@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Book } from "../../../models/Book";
-import { Box, TextField, Button, Grid, Container } from "@mui/material";
+import {  TextField, Button, Grid, Container, Stack } from "@mui/material";
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -23,7 +23,9 @@ function BookForm(props:BookFormProps) {
     category: "",
   });
 
-    const [publishedDate, setPublishedDate] = useState<Dayjs | null>(dayjs('2022-04-17'));
+  const [formType, setFormType] = useState("");
+
+  const [publishedDate, setPublishedDate] = useState<Dayjs | null>(dayjs('2022-04-17'));
 
     useEffect(() => {
       if (props.book) {
@@ -33,9 +35,24 @@ function BookForm(props:BookFormProps) {
           isbn: props.book.isbn || "",
           category: props.book.category || "",
         });
+        setFormType("edit");
         setPublishedDate(dayjs(props.book.publishedDate));
+      } else {
+        setFormType("create");
       }
     }, [props.book]);
+
+    const clearBook = () => {
+      if (formType === "edit") {
+        setFormType("create");
+      }
+        setFormData({
+          title: "",
+          author: "",
+          isbn: "",
+          category: "",
+        });
+    }
 
     
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -123,11 +140,17 @@ function BookForm(props:BookFormProps) {
         />
 
       </Grid>
-      <Box sx={{padding: 2}}>
+      <Stack direction="row" spacing={2} padding={2}   sx={{
+    justifyContent: "center",
+    alignItems: "center",
+  }}>
         <Button type="submit" variant="contained" color="primary">
-            Submit
+            {formType === "edit"? "Edit Book" : "Submit"}
         </Button>
-      </Box>
+        <Button type="button" onClick={()=> clearBook()} variant="contained" color="primary">
+            Clear
+        </Button>
+      </Stack>
       </form>
       </Container>
     </LocalizationProvider>
