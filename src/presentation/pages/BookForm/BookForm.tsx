@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Book } from "../../../models/Book";
 import { Box, TextField, Button, Grid, Container } from "@mui/material";
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -11,40 +11,55 @@ const STORAGE_KEY = 'myBooks';
 interface BookFormProps { 
   setBooks: (book: Book[]) => void; 
   books: Book[]; 
-  book?: Book;
+  book?: Book | undefined | null;
 }
 
 
 function BookForm(props:BookFormProps) {
     const [formData, setFormData] = useState({
-        title: props.book  ? props.book.title : '',
-        author: props.book ? props.book.author: '',
-        isbn: props.book? props.book.isbn: '',
-        category: props.book? props.book.category: '',
-        publishedDate: props.book? props.book.publishedDate: ''
-    });
+    title: "",
+    author: "",
+    isbn: "",
+    category: "",
+  });
+
     const [publishedDate, setPublishedDate] = useState<Dayjs | null>(dayjs('2022-04-17'));
+
+    useEffect(() => {
+      if (props.book) {
+        setFormData({
+          title: props.book.title || "",
+          author: props.book.author || "",
+          isbn: props.book.isbn || "",
+          category: props.book.category || "",
+        });
+        setPublishedDate(dayjs(props.book.publishedDate));
+      }
+    }, [props.book]);
+
     
-    const handleSubmit = (event:  React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log(formData.publishedDate);
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
     const newBook: Book = {
-        title: formData.title,
-        author: formData.author,
-        // TODO add the other fields later
-        id: "",
-        isbn: formData.isbn,
-        category: formData.category,
-        publishedDate: publishedDate? publishedDate.toString(): "",
-        ownerId: "",
-        createdAt: "",
-        updatedAt: ""
+      ...props.book, 
+      id: props.book?.id || crypto.randomUUID(),
+      title: formData.title,
+      author: formData.author,
+      isbn: formData.isbn,
+      category: formData.category,
+      publishedDate: publishedDate ? publishedDate.toString() : "",
+      ownerId: props.book?.ownerId || "",
+      createdAt: props.book?.createdAt || new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
-    
-    addBook(newBook);
-    
-    }
+
+    const updatedBooks = props.book
+      ? props.books.map((b) => (b.id === props.book?.id ? newBook : b)) // edit
+      : [...props.books, newBook]; // create
+
+    saveBooks(updatedBooks);
+  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       setFormData((prev) => ({
@@ -58,11 +73,6 @@ const saveBooks = (newBooks: Book[]) => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(newBooks));
   };
 
-
-  const addBook = (newBook: Book) => {
-    const updatedBooks = [...props.books, newBook];
-    saveBooks(updatedBooks);
-  };
     
     return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -71,7 +81,6 @@ const saveBooks = (newBooks: Book[]) => {
       <Grid container spacing={2}>
         <TextField
           label="Title"
-          defaultValue={props.book?.title}
           variant="outlined"
           name="title"
           value={formData.title}
@@ -81,7 +90,6 @@ const saveBooks = (newBooks: Book[]) => {
 
         <TextField
           label="Author"
-          defaultValue={props.book?.author}
           variant="outlined"
           name="author"
           value={formData.author}
@@ -91,7 +99,6 @@ const saveBooks = (newBooks: Book[]) => {
 
         <TextField
           label="ISBN"
-          defaultValue={props.book?.isbn}
           variant="outlined"
           name="isbn"
           value={formData.isbn}

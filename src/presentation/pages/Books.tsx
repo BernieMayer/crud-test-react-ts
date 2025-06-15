@@ -9,6 +9,7 @@ import BookForm from "./BookForm/BookForm";
 const STORAGE_KEY = 'myBooks';
 
 function Books() {
+  const [editBook, setEditBook] = useState<Book | null>(null);
   const [books, setBooks] = useState<Book[]>([]);
 
   useEffect(() => {
@@ -18,12 +19,20 @@ function Books() {
     }
   }, []);
 
+  function editBookProc(book:Book) {
+    console.log(book);
+    setEditBook(book);
+  }
+
   return (
  <Container maxWidth="sm">
   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 4 }}>
     <h1>Books</h1>
 
-    <BookForm setBooks={setBooks} books={books}/>
+    
+    <BookForm setBooks={setBooks} books={books} book={editBook}/>
+
+    
 
     <Box sx={{ mt: 4 }}>
       {books.length === 0 ? (
@@ -32,7 +41,10 @@ function Books() {
         <ul>
           {books.map((book, idx) => (
             <li key={idx}>
-              <strong>{book.title}</strong> by {book.author}
+              <strong>{book.title}</strong> by {book.author} 
+            <Button type="button" onClick={() => {editBookProc(book)}} variant="contained" color="primary">
+            Edit
+            </Button>
             </li>
           ))}
         </ul>
