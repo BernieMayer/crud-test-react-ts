@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Book } from "../../../models/Book";
-import { Box, TextField, Button } from "@mui/material";
+import { Box, TextField, Button, Grid, Container } from "@mui/material";
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -65,8 +65,9 @@ const saveBooks = (newBooks: Book[]) => {
     
     return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <Container maxWidth="sm">
     <form onSubmit={handleSubmit}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <Grid container spacing={2}>
         <TextField
           label="Title"
           variant="outlined"
@@ -108,12 +109,14 @@ const saveBooks = (newBooks: Book[]) => {
           onChange={(newValue) => setPublishedDate(newValue)}
         />
 
-
+      </Grid>
+      <Box sx={{padding: 2}}>
         <Button type="submit" variant="contained" color="primary">
-          Submit
+            Submit
         </Button>
       </Box>
-    </form>
+      </form>
+      </Container>
     </LocalizationProvider>
     )
     
