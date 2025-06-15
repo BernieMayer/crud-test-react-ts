@@ -58,21 +58,25 @@ function Books() {
               <TableCell>{book.category}</TableCell>
               <TableCell>{book.publishedDate}</TableCell>
               <TableCell>
-                <Button 
-                  type="button" 
-                  onClick={() => setEditBook(book)} 
-                  variant="contained" 
-                  color="primary"
-                >
-                  Edit
-                </Button>
-                <Button
-                  type="button"
-                  onClick={() => deleteBook(book) }
-                  variant="contained"
-                  color="error">
-                    Delete
-                </Button>
+                <Box sx={{padding: 1}}>
+                  <Button 
+                    type="button" 
+                    onClick={() => setEditBook(book)} 
+                    variant="contained" 
+                    color="primary"
+                  >
+                    Edit
+                  </Button>
+                </Box>
+                <Box sx={{padding: 1}}>
+                  <Button
+                    type="button"
+                    onClick={() => deleteBook(book) }
+                    variant="contained"
+                    color="error">
+                      Delete
+                  </Button>
+                </Box>
               </TableCell>
             </TableRow>
           ))}
