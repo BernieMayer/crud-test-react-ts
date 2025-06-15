@@ -1,11 +1,11 @@
-export type Book = {
+export type Book {
     id: string
-    firstName: string
-    lastName: string
-    emailAddress: string
-    phone: string
-    dateOfBirth: string
-    role: 'admin' | 'user'
+    title: string
+    author: string
+    isbn: string
+    category: string
+    publishedDate: string
+    ownerId: string  // foreign key to User
     createdAt: string
     updatedAt: string
 }
