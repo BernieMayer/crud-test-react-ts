@@ -2,7 +2,7 @@ import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
 import { Book } from '../../models/Book';
 import { Container, Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import BookForm from "./BookForm/BookForm";
+import BookForm from "../components/BookForm/BookForm";
 
 
 const STORAGE_KEY = 'myBooks';
