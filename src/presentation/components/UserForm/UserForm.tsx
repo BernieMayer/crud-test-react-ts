@@ -16,28 +16,28 @@ interface UserFormProps {
 }
 
 export default function UserForm({ mode = "new", user, onValidSubmit }: UserFormProps) {
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState(() => {
+    if ((mode === "edit" || mode === "profile") && user) {
+        return {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.emailAddress,
+        phone: user.phone,
+        dateOfBirth: dayjs(user.dateOfBirth),
+        };
+    }
+
+    return {
         firstName: "",
         lastName: "",
         email: "",
         phone: "",
         dateOfBirth: dayjs(),
+    };
     });
 
     const [isValidForm, setValidForm] = useState(false);
     const [errorText, setErrorText] = useState("");
-
-    useEffect(() => {
-        if ((mode === "edit" || mode === "profile") && user) {
-            setFormData({
-                firstName: user.firstName,
-                lastName: user.lastName,
-                email: user.emailAddress,
-                phone: user.phone,
-                dateOfBirth: dayjs(user.dateOfBirth),
-            });
-        }
-    }, [mode, user]);
 
     const setError = (errorText: string) => {
         setValidForm(false);
