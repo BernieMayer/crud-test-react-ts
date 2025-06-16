@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import UserStorage from "../../models/UserStorage"
-import UsersTable from "../components/UserTable/UserTable.test"
+import UsersTable from "../components/UserTable/UserTable"
 import { User } from "../../models/User";
 import {  Link, Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";

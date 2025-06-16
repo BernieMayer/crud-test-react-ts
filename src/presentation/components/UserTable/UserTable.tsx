@@ -35,6 +35,8 @@ const UsersTable: React.FC<Props> = ({ users }) => {
               <TableCell>ID</TableCell>
               <TableCell>Name</TableCell>
               <TableCell>Email</TableCell>
+              <TableCell>Phone</TableCell>
+              <TableCell>Date of Birth</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -43,6 +45,8 @@ const UsersTable: React.FC<Props> = ({ users }) => {
                 <TableCell>{user.id}</TableCell>
                 <TableCell>{user.firstName}</TableCell>
                 <TableCell>{user.emailAddress}</TableCell>
+                <TableCell>{user.phone}</TableCell>
+                <TableCell>{user.dateOfBirth}</TableCell>
               </TableRow>
             ))}
           </TableBody>
