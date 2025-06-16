@@ -7,10 +7,12 @@ import dayjs, { Dayjs } from "dayjs";
 import { useState } from "react";
 import { User } from "../../../models/User";import UserStorage from "../../../models/UserStorage";
 import parsePhoneNumberFromString from "libphonenumber-js";
-import { useNavigate } from "react-router-dom";
 
+interface UserFormProps {
+    onValidSubmit? : (user:User) => void;
+}
 
-export default function UserForm() {
+export default function UserForm({onValidSubmit} :UserFormProps) {
     const [formData, setFormData] = useState({
         firstName: "",
         lastName: "",
@@ -18,8 +20,6 @@ export default function UserForm() {
         phone: "",
         dateOfBirth:  dayjs(),
       });
-
-    const navigate = useNavigate();
 
     const [isValidForm, setValidForm] = useState(false);
     const [errorText, setErrorText] = useState("");
@@ -64,7 +64,9 @@ export default function UserForm() {
         setValidForm(true);
         UserStorage.storeUser(newUser);
 
-        navigate('/dashboard/books')
+        if (onValidSubmit) {
+            onValidSubmit(newUser);
+        }
     }
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

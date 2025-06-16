@@ -1,6 +1,7 @@
 import { User } from "./User";
 
 const USER_KEY = "users";
+const CURRENT_USER = "current_user";
 class UserStorage {
 
 
@@ -26,6 +27,9 @@ class UserStorage {
         return localStorage.getItem(user.emailAddress) === null;
     }
     
+    static setCurrentUser(user:User) {
+        localStorage.setItem(CURRENT_USER, JSON.stringify(user));
+    }
     
 }
 
