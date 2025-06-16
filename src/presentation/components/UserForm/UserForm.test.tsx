@@ -4,7 +4,7 @@ import UserForm from './UserForm';
 
 test('it has the right components', async() => {
 
-    render(<UserForm />);
+    render(<UserForm mode='new' />);
 
     expect(screen.getByText('First Name')).toBeInTheDocument();
     expect(screen.getByText('Last Name')).toBeInTheDocument();

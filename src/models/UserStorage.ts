@@ -14,6 +14,21 @@ class UserStorage {
         localStorage.setItem(user.emailAddress, JSON.stringify(user.emailAddress));
     }
 
+    static findUserUsingEmail(email: string) {
+        const users = this.getAllUsers();
+        var foundUser = null;
+        if (users === null) {
+            return null;
+        }
+
+        users.forEach((user) => { 
+            if (user.emailAddress === email) {
+               foundUser = user;
+            }
+        });
+        return foundUser;
+    }
+
     static update(user: User) {
         const users = this.getAllUsers();
 

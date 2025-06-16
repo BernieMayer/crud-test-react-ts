@@ -1,8 +1,9 @@
 import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
 import { Book } from '../../models/Book';
-import { Container, Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Container, Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Link } from "@mui/material";
 import BookForm from "../components/BookForm/BookForm";
+import { useNavigate } from "react-router-dom";
 
 
 const STORAGE_KEY = 'myBooks';
@@ -10,7 +11,8 @@ const STORAGE_KEY = 'myBooks';
 function Books() {
   const [editBook, setEditBook] = useState<Book | null>(null);
   const [books, setBooks] = useState<Book[]>([]);
-
+  const navigate = useNavigate();
+  
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
@@ -27,7 +29,9 @@ function Books() {
   <Container maxWidth="sm">
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 4 }}>
     <h1>Books</h1>
-
+       <Link  onClick={() => {navigate('/dashboard')}}>
+          Dashboard
+        </Link>
     
     <BookForm setBooks={setBooks} books={books} book={editBook}/>
 
