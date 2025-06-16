@@ -12,8 +12,7 @@ function Login() {
           alignItems: "center",
         }}>
           <TextField
-            id="outlined-password-input"
-            label="User Name"
+            label="Email"
             type="text"
         />
         <TextField
