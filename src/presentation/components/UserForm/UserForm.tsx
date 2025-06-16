@@ -65,19 +65,25 @@ export default function UserForm({ mode = "new", user, onValidSubmit }: UserForm
             createdAt: mode === "edit" && user ? user.createdAt : new Date().toISOString(),
             updatedAt: new Date().toISOString(),
         };
+        if (mode === "new") {
+            if (!UserStorage.checkEmailIsUnique(newUser)) {
+                setError("Email must be unique");
+                return;
+            }
 
-        if (!UserStorage.checkEmailIsUnique(newUser)) {
-            setError("Email must be unique");
-            return;
-        }
-
-        if (!UserStorage.checkPhoneIsUnique(newUser)) {
-            setError("Phone must be unique");
-            return;
+            if (!UserStorage.checkPhoneIsUnique(newUser)) {
+                setError("Phone must be unique");
+                return;
+            }
         }
 
         setValidForm(true);
-        UserStorage.storeUser(newUser);
+        if (mode === "new") {
+            UserStorage.storeUser(newUser);
+        } else if (mode === "edit") {
+            UserStorage.update(newUser);
+        }
+
 
         if (onValidSubmit) {
             onValidSubmit(newUser);

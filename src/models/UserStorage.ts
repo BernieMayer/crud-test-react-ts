@@ -14,6 +14,16 @@ class UserStorage {
         localStorage.setItem(user.emailAddress, JSON.stringify(user.emailAddress));
     }
 
+    static update(user: User) {
+        const users = this.getAllUsers();
+
+        if (users) {
+            //replace user
+            const newUsers = users.map((u) => (u.id === user.id ? user: u) )
+            localStorage.setItem(USER_KEY, JSON.stringify(newUsers));
+        }
+    }
+
     static getAllUsers(): User[] | null {
         const users = localStorage.getItem(USER_KEY);
         return users ? (JSON.parse(users) as User[]) : null;
