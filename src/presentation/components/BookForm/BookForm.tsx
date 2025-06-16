@@ -24,6 +24,8 @@ function BookForm(props:BookFormProps) {
     category: "",
   });
 
+  const [errorText, setErrorText] = useState("");
+
   const [formType, setFormType] = useState("");
 
   const [publishedDate, setPublishedDate] = useState<Dayjs | null>(dayjs('2022-04-17'));
@@ -55,12 +57,28 @@ function BookForm(props:BookFormProps) {
         });
     }
 
+    const verifyUniqueISBN = (isbn:string) => {
+      let result = true;
+
+      props.books.forEach((book)=> {
+        if (book.isbn === isbn) {
+          result = false;
+        }
+      });
+      return result;
+    }
+
     
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
       const currentUser = UserStorage.getCurrentUser();
       const ownerId = currentUser ? currentUser.id : "";
+
+      if (!verifyUniqueISBN(formData.isbn)) {
+        setErrorText("ISBN must be unique");
+        return;
+      }
 
       const newBook: Book = {
         ...props.book, 
@@ -83,7 +101,8 @@ function BookForm(props:BookFormProps) {
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      setFormData((prev) => ({
+    setErrorText("");  
+    setFormData((prev) => ({
       ...prev,
       [event.target.name]: event.target.value,
       }));
@@ -154,6 +173,7 @@ function BookForm(props:BookFormProps) {
         <Button type="button" onClick={()=> clearBook()} variant="contained" color="primary">
             Clear
         </Button>
+        <p>{errorText}</p>
       </Stack>
       </form>
       </Container>
