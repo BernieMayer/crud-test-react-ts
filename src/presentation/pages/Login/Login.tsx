@@ -1,9 +1,20 @@
 import { Button, Stack, TextField } from "@mui/material"
 import { useNavigate } from "react-router-dom";
+import UserStorage from "../../../models/UserStorage";
+import { useState } from "react";
 
 function Login() {
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
 
+  const clickLogin = () => {
+    const user = UserStorage.findUserUsingEmail(email);
+
+    if (user) {
+      UserStorage.setCurrentUser(user);
+    }
+    navigate('/dashboard/books')
+  }
 
   return (
     <> 
@@ -11,10 +22,12 @@ function Login() {
           justifyContent: "center",
           alignItems: "center",
         }}>
-          <TextField
-            label="Email"
-            type="text"
-        />
+           <TextField
+        label="Email"
+        type="text"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
         <TextField
             id="outlined-password-input"
             label="Password"
@@ -23,7 +36,7 @@ function Login() {
         />
       </Stack>
 
-      <Button variant="outlined" onClick={() => navigate('/dashboard/books')}>
+      <Button variant="outlined" onClick={clickLogin}>
         Login
       </Button>
     </>
