@@ -6,6 +6,8 @@ import { PickerValue } from "@mui/x-date-pickers/internals/models";
 import dayjs, { Dayjs } from "dayjs";
 import { useState } from "react";
 import { User } from "../../../models/User";import UserStorage from "../../../models/UserStorage";
+import parsePhoneNumberFromString from "libphonenumber-js";
+import { useNavigate } from "react-router-dom";
 
 
 export default function UserForm() {
@@ -16,25 +18,53 @@ export default function UserForm() {
         phone: "",
         dateOfBirth:  dayjs(),
       });
+
+    const navigate = useNavigate();
+
+    const [isValidForm, setValidForm] = useState(false);
+    const [errorText, setErrorText] = useState("");
     
+    const setError = (errorText:string) => {
+        setValidForm(false);
+        setErrorText(errorText);
+    }
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
+        e.preventDefault();
 
-      const newUser: User = {
-          id: crypto.randomUUID(),
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          emailAddress: formData.email,
-          phone: formData.phone,
-          dateOfBirth: formData.dateOfBirth.toString(),
-          role: "user",
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-      }
+        if (!parsePhoneNumberFromString(formData.phone)) {
+            setError("Invalid phone number");
 
-      UserStorage.storeUser(newUser);
+            return;
+        }
 
+      
+        const newUser: User = {
+            id: crypto.randomUUID(),
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            emailAddress: formData.email,
+            phone: formData.phone,
+            dateOfBirth: formData.dateOfBirth.toString(),
+            role: "user",
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+        }
+
+        if (!UserStorage.checkEmailIsUnique(newUser)) {
+            setError("Email must be unique");
+            return;
+        }
+
+        if (!UserStorage.checkPhoneIsUnique(newUser)) {
+            setError("Phone must be unique");
+            return;
+        }
+
+        setValidForm(true);
+        UserStorage.storeUser(newUser);
+
+        navigate('/dashboard/books')
     }
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -106,11 +136,10 @@ export default function UserForm() {
                     <Button type="submit" variant="contained" color="primary">
                         { "Register"}
                     </Button>
-                </Box>
-              
-
-           
+                </Box>       
             </form>
+
+             {!isValidForm && <p> {errorText} </p>}
         </Container>
         </LocalizationProvider>
     );
