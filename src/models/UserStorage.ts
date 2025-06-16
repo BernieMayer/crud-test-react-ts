@@ -30,6 +30,11 @@ class UserStorage {
     static setCurrentUser(user:User) {
         localStorage.setItem(CURRENT_USER, JSON.stringify(user));
     }
+
+    static getCurrentUser():User | null {
+        const current_user = localStorage.getItem(CURRENT_USER);
+        return current_user? JSON.parse(current_user) as User : null;
+    }
     
 }
 

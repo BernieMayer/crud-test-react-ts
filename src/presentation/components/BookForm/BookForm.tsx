@@ -5,6 +5,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
+import UserStorage from "../../../models/UserStorage";
 
 const STORAGE_KEY = 'myBooks';
 
@@ -58,6 +59,9 @@ function BookForm(props:BookFormProps) {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
+      const currentUser = UserStorage.getCurrentUser();
+      const ownerId = currentUser ? currentUser.id : "";
+
       const newBook: Book = {
         ...props.book, 
         id: props.book?.id || crypto.randomUUID(),
@@ -66,7 +70,7 @@ function BookForm(props:BookFormProps) {
         isbn: formData.isbn,
         category: formData.category,
         publishedDate: publishedDate ? publishedDate.toString() : "",
-        ownerId: props.book?.ownerId || "",
+        ownerId: props.book?.ownerId || ownerId,
         createdAt: props.book?.createdAt || new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
