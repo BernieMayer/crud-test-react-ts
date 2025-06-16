@@ -68,6 +68,7 @@ export default function UserForm() {
     }
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setErrorText("");
       setFormData((prev) => ({
       ...prev,
       [event.target.name]: event.target.value,
